@@ -6,8 +6,6 @@ namespace TodoApi.Context
     {
         private readonly IConfiguration _configuration;
         public DbSet<Todo> Todos { get; set; }
-        public string DbPath { get; }
-
 
         public TodoContext(IConfiguration configuration)
         {
