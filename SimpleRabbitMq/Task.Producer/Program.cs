@@ -2,31 +2,27 @@
 using RabbitMQ.Client;
 
 var factory = new ConnectionFactory {
-    HostName = "rabbitmq"
+    HostName = Common.Constants.RabbitMqHost,
 };
 
 using var connection = factory.CreateConnection();
 using var channel = connection.CreateModel();
 
-channel.QueueDeclare(queue: "hello",
-                     durable: false,
-                     exclusive: false,
-                     autoDelete: false,
-                     arguments: null);
+channel.ExchangeDeclare(
+    Common.Constants.TaskExchange,
+    ExchangeType.Fanout,
+    durable: false
+);
 
-const string message = "Hello, world!";
-var body = Encoding.UTF8.GetBytes(message);
-
-
-
+var count = 0;
 while(true)
 {
     channel.BasicPublish(
-        exchange: "",
-        routingKey: "hello",
+        exchange: Common.Constants.TaskExchange,
+        routingKey: "",
         basicProperties: null,
-        body: body
+        body: Encoding.UTF8.GetBytes($"Task #{++count:D4}")
     );
 
-    // Thread.Sleep(TimeSpan.FromMilliseconds(1));
+    Thread.Sleep(TimeSpan.FromSeconds(1));
 }

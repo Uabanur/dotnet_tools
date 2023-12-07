@@ -5,19 +5,7 @@ using RabbitMQ.Client.Events;
 var consumerId = Guid.NewGuid().ToString().Substring(0, 5);
 
 void log(string msg) => Console.WriteLine($" [{consumerId}] {msg}");
-void process(IModel model, string msg)
-{
-    log($"Accepted: {msg}");
-
-    model.BasicPublish(
-        exchange: Common.Constants.LogExchange ,
-        routingKey: "",
-        basicProperties: null,
-        body: Encoding.UTF8.GetBytes($"{msg} completed succesfully")
-    );
-
-    log($"Completed: {msg}");
-}
+void process(string msg) => log($"Logged: {msg}");
 
 var factory = new ConnectionFactory {
     HostName = Common.Constants.RabbitMqHost,
@@ -25,12 +13,6 @@ var factory = new ConnectionFactory {
 
 using var connection = factory.CreateConnection();
 using var channel = connection.CreateModel();
-
-channel.ExchangeDeclare(
-    Common.Constants.TaskExchange,
-    ExchangeType.Fanout,
-    durable: false
-);
 
 channel.ExchangeDeclare(
     Common.Constants.LogExchange,
@@ -42,7 +24,7 @@ var queueName = channel.QueueDeclare().QueueName;
 
 channel.QueueBind(
     queue: queueName, 
-    exchange: Common.Constants.TaskExchange,
+    exchange: Common.Constants.LogExchange,
     routingKey: ""
 );
 
@@ -59,7 +41,7 @@ consumer.Received += (model, ea) =>
         var body = ea.Body.ToArray();
         var message = Encoding.UTF8.GetString(body);
         log($"Received: {message}");
-        process(ebc.Model, message);
+        process(message);
         ebc.Model.BasicAck(ea.DeliveryTag, multiple: false);
     } catch (Exception e)
     {

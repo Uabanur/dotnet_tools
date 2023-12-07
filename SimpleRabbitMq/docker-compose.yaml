@@ -12,16 +12,26 @@ services:
       timeout: 10s
       retries: 10
 
-  producer:
-    build: Task.Producer
+  task-producer:
+    build: 
+      context: .
+      dockerfile: Task.Producer/Dockerfile
     depends_on:
       rabbitmq:
         condition: service_healthy
-    #restart: always
 
-  consumer:
-    build: Task.Consumer
+  task-consumer:
+    build: 
+      context: .
+      dockerfile: Task.Consumer/Dockerfile
     depends_on:
       rabbitmq:
         condition: service_healthy
-    #restart: always
+
+  log-consumer:
+    build: 
+      context: .
+      dockerfile: Log.Consumer/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
