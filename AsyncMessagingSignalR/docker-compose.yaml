@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management  # rabbitmq with management interface enabled
+    ports:
+    - 5672:5672     # MessageBroker
+    - 15672:15672   # Managing interface 
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  gateway:
+    build: 
+      context: .
+      dockerfile: ASM.Gateway/Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  consumer:
+    build: 
+      context: .
+      dockerfile: ASM.MessageConsumer/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
