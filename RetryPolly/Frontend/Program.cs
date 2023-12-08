@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient(InfoService.ClientName, 
     client => 
     {
-        client.BaseAddress = new Uri("http://dep:5000");
+        client.BaseAddress = new Uri("http://dep");
     })
     .AddTransientHttpErrorPolicy(policyBuilder => 
             policyBuilder.WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1), 5)));

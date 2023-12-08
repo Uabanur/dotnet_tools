@@ -12,5 +12,3 @@ services:
     build: 
       context: .
       dockerfile: FlackyBackend/Dockerfile
-    ports:
-      - 5000:5000
