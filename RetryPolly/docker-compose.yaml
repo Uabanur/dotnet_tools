@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: 
+      context: .
+      dockerfile: Frontend/Dockerfile
+    ports:
+      - 8080:8080
+
+  dep:
+    build: 
+      context: .
+      dockerfile: FlackyBackend/Dockerfile
+    ports:
+      - 5000:5000
