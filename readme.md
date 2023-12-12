@@ -7,7 +7,7 @@ Todo:
 
 
 Implemented examples:
-- Basic database interations:
+- Basic database integrations:
     - Sqlite: [TodoApiSqlite](./TodoApiSqlite_EF)
     - MySql: [TodoApiMySql](./TodoApiMySql_EF)
     - Postgres: [TodoApoPostgres](./TodoApiPostgres_EF)
