@@ -8,4 +8,9 @@ Todo:
 
 Implemented examples:
 - Basic database interations:
-    - [Sqlite](./TodoApiSqlite_EF)
+    - Sqlite: [TodoApiSqlite](./TodoApiSqlite_EF)
+    - MySql: [TodoApiMySql](./TodoApiMySql_EF)
+    - Postgres: [TodoApoPostgres](./TodoApiPostgres_EF)
+- Polly: [RetryPolly](./RetryPolly)
+- RabbitMq: [SimpleRabbitMq](./SimpleRabbitMq) and [AsyncMessagingSignalR](./AsyncMessagingSignalR)
+- SignalR: [SingalRChat](./SignalRChat) and [AsyncMessagingSignalR](./AsyncMessagingSignalR)
